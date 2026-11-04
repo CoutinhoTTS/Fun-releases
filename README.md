@@ -14,7 +14,9 @@ https://github.com/CoutinhoTTS/Fun-releases/releases/latest/download/latest.json
 ```
 
 `releases/latest` ignores drafts and pre-releases. Download URLs are served from
-GitHub's object storage after a redirect and need no authentication.
+GitHub's object storage after a redirect and need no authentication. GitHub
+caches release assets at the edge: after a publish, the feed can serve the
+previous manifest for a few minutes. Checks are daily, so this converges.
 
 ## Manifest
 
@@ -25,7 +27,7 @@ Each stable release publishes `latest.json` next to the DMG:
   "version": "0.1.2",
   "tag": "v0.1.2",
   "channel": "stable",
-  "published_at": "2026-11-04T01:55:51Z",
+  "published_at": "2026-11-04T02:45:01Z",
   "notes_url": "https://github.com/CoutinhoTTS/Fun-releases/releases/tag/v0.1.2",
   "assets": {
     "macos-arm64": {
@@ -41,6 +43,8 @@ Rules:
 
 - `version` is the semantic version without a leading `v`; compare it with the
   bundle's `CFBundleShortVersionString`.
+- `tag` is the exact release tag the asset URLs point at. Pin downloads to it.
+- `channel` is `stable` or `prerelease`.
 - `assets` is keyed by `<os>-<arch>`; only publish keys whose artifact exists.
 - `sha256` is lowercase hex and is verified before installation.
 - `notes_url` must be publicly reachable (this repository, not the private source).
@@ -50,8 +54,17 @@ Rules:
 ```text
 v0.1.2
 ├── Fun-0.1.2-macos-arm64.dmg
+├── SHA256SUMS
 └── latest.json
 ```
+
+## Versioning
+
+A published tag is immutable. To ship a change, bump the version and publish a
+new tag: the app compares versions from the manifest, and replacing an existing
+asset can briefly leave the manifest and the cached DMG out of sync. The
+publishing script refuses to overwrite a published release unless `--force` is
+explicitly passed.
 
 ## Signing
 
