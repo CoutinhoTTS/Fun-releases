@@ -1,0 +1,14 @@
+{
+  "version": "0.1.2",
+  "tag": "v0.1.2",
+  "channel": "stable",
+  "published_at": "2026-11-04T01:55:51Z",
+  "notes_url": "https://github.com/CoutinhoTTS/Fun-releases/releases/tag/v0.1.2",
+  "assets": {
+    "macos-arm64": {
+      "url": "https://github.com/CoutinhoTTS/Fun-releases/releases/download/v0.1.2/Fun-0.1.2-macos-arm64.dmg",
+      "sha256": "396f179e4ba41ee94092fe966d8f12d38393ac24787666ed08ace1cea8ac713b",
+      "size": 27426093
+    }
+  }
+}
